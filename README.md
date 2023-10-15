@@ -5,7 +5,8 @@
 <a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white"></a>
 <a href="https://pytorchlightning.ai/"><img alt="Lightning" src="https://img.shields.io/badge/-Lightning-792ee5?logo=pytorchlightning&logoColor=white"></a>
 <a href="https://hydra.cc/"><img alt="Config: Hydra" src="https://img.shields.io/badge/Config-Hydra-89b8cd"></a>
-<a href="https://github.com/ashleve/lightning-hydra-template"><img alt="Template" src="https://img.shields.io/badge/-Lightning--Hydra--Template-017F2F?style=flat&logo=github&labelColor=gray"></a><br>
+<a href="https://github.com/ashleve/lightning-hydra-template"><img alt="Template" src="https://img.shields.io/badge/-Lightning--Hydra--Template-017F2F?style=flat&logo=github&labelColor=gray"></a>
+
 [![Paper](http://img.shields.io/badge/paper-arxiv.1001.2234-B31B1B.svg)](https://www.nature.com/articles/nature14539)
 [![Conference](http://img.shields.io/badge/AnyConference-year-4b44ce.svg)](https://papers.nips.cc/paper/2020)
 
@@ -533,7 +534,7 @@ Using this config we can instantiate the object with the following line:
 model = hydra.utils.instantiate(config.model)
 ```
 
-This allows you to easily iterate over new models! Every time you create a new one, just specify its module path and parameters in appropriate config file. <br>
+This allows you to easily iterate over new models! Every time you create a new one, just specify its module path and parameters in appropriate config file.
 
 Switch between models and datamodules with command line arguments:
 
@@ -545,9 +546,11 @@ Example pipeline managing the instantiation logic: [src/train.py](src/train.py).
 
 ## Main Config
 
-Location: [configs/train.yaml](configs/train.yaml) <br>
-Main project config contains default training configuration.<br>
-It determines how config is composed when simply executing command `python train.py`.<br>
+Location: [configs/train.yaml](configs/train.yaml)
+
+Main project config contains default training configuration.
+
+It determines how config is composed when simply executing command `python train.py`.
 
 <details>
 <summary><b>Show main project config</b></summary>
@@ -605,12 +608,12 @@ seed: null
 
 </details>
 
-<br>
-
 ## Experiment Config
 
-Location: [configs/experiment](configs/experiment)<br>
-Experiment configs allow you to overwrite parameters from main config.<br>
+Location: [configs/experiment](configs/experiment)
+
+Experiment configs allow you to overwrite parameters from main config.
+
 For example, you can use them to version control best hyperparameters for each combination of model and dataset.
 
 <details>
@@ -659,8 +662,6 @@ logger:
 
 </details>
 
-<br>
-
 ## Workflow
 
 **Basic workflow**
@@ -684,8 +685,6 @@ _Say you want to execute many runs to plot how accuracy changes in respect to ba
    ```
 
 2. Write a script or notebook that searches over the `logs/` folder and retrieves csv logs from runs containing given tags in config. Plot the results.
-
-<br>
 
 ## Logs
 
@@ -914,7 +913,8 @@ conda activate myenv
 <details>
 <summary><b>Use automatic code formatting</b></summary>
 
-Use pre-commit hooks to standardize code formatting of your project and save mental energy.<br>
+Use pre-commit hooks to standardize code formatting of your project and save mental energy.
+
 Simply install pre-commit package with:
 
 ```bash
@@ -946,7 +946,7 @@ pre-commit autoupdate
 <details>
 <summary><b>Set private environment variables in .env file</b></summary>
 
-System specific variables (e.g. absolute paths to datasets) should not be under version control or it will result in conflict between different users. Your private keys also shouldn't be versioned since you don't want them to be leaked.<br>
+System specific variables (e.g. absolute paths to datasets) should not be under version control or it will result in conflict between different users. Your private keys also shouldn't be versioned since you don't want them to be leaked.
 
 Template contains `.env.example` file, which serves as an example. Create a new file called `.env` (this name is excluded from version control in .gitignore).
 You should use it for storing environment variables like this:
@@ -1015,7 +1015,7 @@ Torchmetrics provides metrics for most use cases, like F1 score or confusion mat
 <details>
 <summary><b>Follow PyTorch Lightning style guide</b></summary>
 
-The style guide is available [here](https://pytorch-lightning.readthedocs.io/en/latest/starter/style_guide.html).<br>
+The style guide is available [here](https://pytorch-lightning.readthedocs.io/en/latest/starter/style_guide.html).
 
 1. Be explicit in your init. Try to define all the relevant defaults so that the user doesn’t have to guess. Provide type hints. This way your module is reusable across projects!
 
@@ -1074,7 +1074,8 @@ The style guide is available [here](https://pytorch-lightning.readthedocs.io/en/
 <details>
 <summary><b>Version control your data and models with DVC</b></summary>
 
-Use [DVC](https://dvc.org) to version control big files, like your data or trained ML models.<br>
+Use [DVC](https://dvc.org) to version control big files, like your data or trained ML models.
+
 To initialize the dvc repository:
 
 ```bash
