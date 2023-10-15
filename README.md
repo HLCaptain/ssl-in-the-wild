@@ -16,8 +16,8 @@ Homework project for the Deep Learning course at Budapest University of Technolo
 Team:
 
 - Balázs Püspök-Kiss (BL6ADS)
-- Anna Czifrus (IXAGK7)
-- Réka Farkas (H2MJ2U)
+- Anna Czifrus (H2MJ2U)
+- Réka Farkas (IXAGK7)
 
 ## Project
 
