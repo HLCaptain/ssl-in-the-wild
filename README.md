@@ -42,7 +42,7 @@ Difficulty: hard
 
 The project contains a `Dockerfile` you can run to train and evaluate models. You can also use the commands below to install the project locally.
 
-To run with Docker:
+### Docker
 
 ```bash
 # build docker image
