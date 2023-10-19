@@ -1,83 +1,119 @@
 <div align="center">
 
-# Lightning-Hydra-Template
+# SSL in the Wild: comparison of Self-Supervised Learning methods on ImageNet
 
-[![python](https://img.shields.io/badge/-Python_3.8_%7C_3.9_%7C_3.10-blue?logo=python&logoColor=white)](https://github.com/pre-commit/pre-commit)
-[![pytorch](https://img.shields.io/badge/PyTorch_2.0+-ee4c2c?logo=pytorch&logoColor=white)](https://pytorch.org/get-started/locally/)
-[![lightning](https://img.shields.io/badge/-Lightning_2.0+-792ee5?logo=pytorchlightning&logoColor=white)](https://pytorchlightning.ai/)
-[![hydra](https://img.shields.io/badge/Config-Hydra_1.3-89b8cd)](https://hydra.cc/)
-[![black](https://img.shields.io/badge/Code%20Style-Black-black.svg?labelColor=gray)](https://black.readthedocs.io/en/stable/)
-[![isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/) <br>
-[![tests](https://github.com/ashleve/lightning-hydra-template/actions/workflows/test.yml/badge.svg)](https://github.com/ashleve/lightning-hydra-template/actions/workflows/test.yml)
-[![code-quality](https://github.com/ashleve/lightning-hydra-template/actions/workflows/code-quality-main.yaml/badge.svg)](https://github.com/ashleve/lightning-hydra-template/actions/workflows/code-quality-main.yaml)
-[![codecov](https://codecov.io/gh/ashleve/lightning-hydra-template/branch/main/graph/badge.svg)](https://codecov.io/gh/ashleve/lightning-hydra-template) <br>
-[![license](https://img.shields.io/badge/License-MIT-green.svg?labelColor=gray)](https://github.com/ashleve/lightning-hydra-template#license)
-[![PRs](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/ashleve/lightning-hydra-template/pulls)
-[![contributors](https://img.shields.io/github/contributors/ashleve/lightning-hydra-template.svg)](https://github.com/ashleve/lightning-hydra-template/graphs/contributors)
+<a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white"></a>
+<a href="https://pytorchlightning.ai/"><img alt="Lightning" src="https://img.shields.io/badge/-Lightning-792ee5?logo=pytorchlightning&logoColor=white"></a>
+<a href="https://hydra.cc/"><img alt="Config: Hydra" src="https://img.shields.io/badge/Config-Hydra-89b8cd"></a>
+<a href="https://github.com/ashleve/lightning-hydra-template"><img alt="Template" src="https://img.shields.io/badge/-Lightning--Hydra--Template-017F2F?style=flat&logo=github&labelColor=gray"></a>
 
-A clean template to kickstart your deep learning project 🚀⚡🔥<br>
-Click on [<kbd>Use this template</kbd>](https://github.com/ashleve/lightning-hydra-template/generate) to initialize new repository.
-
-_Suggestions are always welcome!_
+[![Paper](http://img.shields.io/badge/paper-arxiv.1001.2234-B31B1B.svg)](https://www.nature.com/articles/nature14539)
+[![Conference](http://img.shields.io/badge/AnyConference-year-4b44ce.svg)](https://papers.nips.cc/paper/2020)
 
 </div>
 
-<br>
+Homework project for the Deep Learning course at Budapest University of Technology and Economics.
 
-## 📌  Introduction
+Team:
 
-**Why you might want to use it:**
+- Balázs Püspök-Kiss (BL6ADS)
+- Anna Czifrus (H2MJ2U)
+- Réka Farkas (IXAGK7)
 
-✅ Save on boilerplate <br>
-Easily add new models, datasets, tasks, experiments, and train on different accelerators, like multi-GPU, TPU or SLURM clusters.
+## Project
 
-✅ Education <br>
-Thoroughly commented. You can use this repo as a learning resource.
+### Self-supervised learning "in-the-wild"
 
-✅ Reusability <br>
-Collection of useful MLOps tools, configs, and code snippets. You can use this repo as a reference for various utilities.
+Most of the popular self-supervised learning (SSL) methods are developed for pretraining on ImageNet and assessed on ImageNet-1k classification. Therefore, these methods are tuned and designed (i.e., “overfitted”) for this dataset and might perform worse on other datasets and data “from-the-wild". Testing this hypothesis on multiple datasets could provide valuable insights on the limitations of SSL, giving you hands-on experience with these methods. Task of the students: Explore open-source implementations of self-supervised learning methods, select at least two methods (with matching ImageNet-pretrained models available for each). Get familiar with the selected algorithms, hyperparameters, applied optimizers, etc. Select 1-2 classification datasets that are not related to ImageNet (and are reasonably sized, based on your computing budget). Pretrain models on this/these dataset(s) using the selected SSL methods. Implement so-called linear benchmark evaluation procedures on a subset of ImageNet (ImageNet100, imagenette or tiny-imagenet). Compare the pretrained models on this benchmark (including publicly available models trained on ImageNet), also analyze computational costs, training times, sensitivity to hyperparameters, etc.
 
-**Why you might not want to use it:**
+Related materials:
 
-❌ Things break from time to time <br>
-Lightning and Hydra are still evolving and integrate many libraries, which means sometimes things break. For the list of currently known problems visit [this page](https://github.com/ashleve/lightning-hydra-template/labels/bug).
+- https://www.kaggle.com/datasets/ambityga/imagenet100
+- https://huggingface.co/datasets/zh-plus/tiny-imagenet
+- https://github.com/fastai/imagenette
+- https://github.com/lightly-ai/lightly
+- https://github.com/vturrisi/solo-learn
+- https://arxiv.org/abs/2103.01988
+- https://arxiv.org/abs/2103.13559
+- https://proceedings.neurips.cc/paper/2020/hash/22f791da07b0d8a2504c2537c560001c-Abstract.html
 
-❌ Not adjusted for data engineering <br>
-Template is not really adjusted for building data pipelines that depend on each other. It's more efficient to use it for model prototyping on ready-to-use data.
+Difficulty: hard
 
-❌ Overfitted to simple use case <br>
-The configuration setup is built with simple lightning training in mind. You might need to put some effort to adjust it for different use cases, e.g. lightning fabric.
+## Installation
 
-❌ Might not support your workflow <br>
-For example, you can't resume hydra-based multirun or hyperparameter search.
+The project contains a `Dockerfile` you can run to train and evaluate models. You can also use the commands below to install the project locally.
 
-> **Note**: _Keep in mind this is unofficial community project._
+### Docker
 
-<br>
+```bash
+# build docker image
+docker build -t ssl-in-the-wild .
 
-## Main Technologies
+# run docker image (trains and evaluates models)
+docker run ssl-in-the-wild
+```
+
+### Pip
+
+```bash
+# clone project
+git clone https://github.com/HLCaptain/ssl-in-the-wild
+cd ssl-in-the-wild
+
+# [OPTIONAL] create conda environment
+conda create -n myenv python=3.9
+conda activate myenv
+
+# install pytorch according to instructions
+# https://pytorch.org/get-started/
+
+# install requirements
+pip install -r requirements.txt
+```
+
+### Conda
+
+```bash
+# clone project
+git clone https://github.com/HLCaptain/ssl-in-the-wild
+cd ssl-in-the-wild
+
+# create conda environment and install dependencies
+conda env create -f environment.yaml -n myenv
+
+# activate conda environment
+conda activate myenv
+```
+
+## How to run
+
+Train model with default configuration
+
+```bash
+# train on CPU
+python src/train.py trainer=cpu
+
+# train on GPU
+python src/train.py trainer=gpu
+```
+
+Train model with chosen experiment configuration from [configs/experiment/](configs/experiment/)
+
+```bash
+python src/train.py experiment=experiment_name.yaml
+```
+
+You can override any parameter from command line like this
+
+```bash
+python src/train.py trainer.max_epochs=20 data.batch_size=64
+```
+
+## Frameworks used
 
 [PyTorch Lightning](https://github.com/PyTorchLightning/pytorch-lightning) - a lightweight PyTorch wrapper for high-performance AI research. Think of it as a framework for organizing your PyTorch code.
 
 [Hydra](https://github.com/facebookresearch/hydra) - a framework for elegantly configuring complex applications. The key feature is the ability to dynamically create a hierarchical configuration by composition and override it through config files and the command line.
-
-<br>
-
-## Main Ideas
-
-- [**Rapid Experimentation**](#your-superpowers): thanks to hydra command line superpowers
-- [**Minimal Boilerplate**](#how-it-works): thanks to automating pipelines with config instantiation
-- [**Main Configs**](#main-config): allow you to specify default training configuration
-- [**Experiment Configs**](#experiment-config): allow you to override chosen hyperparameters and version control experiments
-- [**Workflow**](#workflow): comes down to 4 simple steps
-- [**Experiment Tracking**](#experiment-tracking): Tensorboard, W&B, Neptune, Comet, MLFlow and CSVLogger
-- [**Logs**](#logs): all logs (checkpoints, configs, etc.) are stored in a dynamically generated folder structure
-- [**Hyperparameter Search**](#hyperparameter-search): simple search is effortless with Hydra plugins like Optuna Sweeper
-- [**Tests**](#tests): generic, easy-to-adapt smoke tests for speeding up the development
-- [**Continuous Integration**](#continuous-integration): automatically test and lint your repo with Github Actions
-- [**Best Practices**](#best-practices): a couple of recommended tools, practices and standards
-
-<br>
 
 ## Project Structure
 
@@ -135,34 +171,20 @@ The directory structure of new project looks like this:
 └── README.md
 ```
 
-<br>
+## Main Ideas
 
-## 🚀  Quickstart
+- [**Rapid Experimentation**](#your-superpowers): thanks to hydra command line superpowers
+- [**Minimal Boilerplate**](#how-it-works): thanks to automating pipelines with config instantiation
+- [**Main Configs**](#main-config): allow you to specify default training configuration
+- [**Experiment Configs**](#experiment-config): allow you to override chosen hyperparameters and version control experiments
+- [**Workflow**](#workflow): comes down to 4 simple steps
+- [**Experiment Tracking**](#experiment-tracking): Tensorboard, W&B, Neptune, Comet, MLFlow and CSVLogger
+- [**Logs**](#logs): all logs (checkpoints, configs, etc.) are stored in a dynamically generated folder structure
+- [**Hyperparameter Search**](#hyperparameter-search): simple search is effortless with Hydra plugins like Optuna Sweeper
+- [**Tests**](#tests): generic, easy-to-adapt smoke tests for speeding up the development
+- [**Continuous Integration**](#continuous-integration): automatically test and lint your repo with Github Actions
+- [**Best Practices**](#best-practices): a couple of recommended tools, practices and standards
 
-```bash
-# clone project
-git clone https://github.com/ashleve/lightning-hydra-template
-cd lightning-hydra-template
-
-# [OPTIONAL] create conda environment
-conda create -n myenv python=3.9
-conda activate myenv
-
-# install pytorch according to instructions
-# https://pytorch.org/get-started/
-
-# install requirements
-pip install -r requirements.txt
-```
-
-Template contains example with MNIST classification.<br>
-When running `python src/train.py` you should see something like this:
-
-<div align="center">
-
-![](https://github.com/ashleve/lightning-hydra-template/blob/resources/terminal.png)
-
-</div>
 
 ## ⚡  Your Superpowers
 
@@ -490,25 +512,6 @@ ValueError: Specify tags before launching a multirun!
 
 </details>
 
-<br>
-
-## ❤️  Contributions
-
-This project exists thanks to all the people who contribute.
-
-![Contributors](https://readme-contributors.now.sh/ashleve/lightning-hydra-template?extension=jpg&width=400&aspectRatio=1)
-
-Have a question? Found a bug? Missing a specific feature? Feel free to file a new issue, discussion or PR with respective title and description.
-
-Before making an issue, please verify that:
-
-- The problem still exists on the current `main` branch.
-- Your python dependencies are updated to recent versions.
-
-Suggestions for improvements are always welcome!
-
-<br>
-
 ## How It Works
 
 All PyTorch Lightning modules are dynamically instantiated from module paths specified in config. Example model config:
@@ -531,7 +534,7 @@ Using this config we can instantiate the object with the following line:
 model = hydra.utils.instantiate(config.model)
 ```
 
-This allows you to easily iterate over new models! Every time you create a new one, just specify its module path and parameters in appropriate config file. <br>
+This allows you to easily iterate over new models! Every time you create a new one, just specify its module path and parameters in appropriate config file.
 
 Switch between models and datamodules with command line arguments:
 
@@ -541,13 +544,13 @@ python train.py model=mnist
 
 Example pipeline managing the instantiation logic: [src/train.py](src/train.py).
 
-<br>
-
 ## Main Config
 
-Location: [configs/train.yaml](configs/train.yaml) <br>
-Main project config contains default training configuration.<br>
-It determines how config is composed when simply executing command `python train.py`.<br>
+Location: [configs/train.yaml](configs/train.yaml)
+
+Main project config contains default training configuration.
+
+It determines how config is composed when simply executing command `python train.py`.
 
 <details>
 <summary><b>Show main project config</b></summary>
@@ -605,12 +608,12 @@ seed: null
 
 </details>
 
-<br>
-
 ## Experiment Config
 
-Location: [configs/experiment](configs/experiment)<br>
-Experiment configs allow you to overwrite parameters from main config.<br>
+Location: [configs/experiment](configs/experiment)
+
+Experiment configs allow you to overwrite parameters from main config.
+
 For example, you can use them to version control best hyperparameters for each combination of model and dataset.
 
 <details>
@@ -659,8 +662,6 @@ logger:
 
 </details>
 
-<br>
-
 ## Workflow
 
 **Basic workflow**
@@ -684,8 +685,6 @@ _Say you want to execute many runs to plot how accuracy changes in respect to ba
    ```
 
 2. Write a script or notebook that searches over the `logs/` folder and retrieves csv logs from runs containing given tags in config. Plot the results.
-
-<br>
 
 ## Logs
 
@@ -720,8 +719,6 @@ Default logging structure:
 
 You can change this structure by modifying paths in [hydra configuration](configs/hydra).
 
-<br>
-
 ## Experiment Tracking
 
 PyTorch Lightning supports many popular logging frameworks: [Weights&Biases](https://www.wandb.com/), [Neptune](https://neptune.ai/), [Comet](https://www.comet.ml/), [MLFlow](https://mlflow.org), [Tensorboard](https://www.tensorflow.org/tensorboard/).
@@ -737,8 +734,6 @@ You can use many of them at once (see [configs/logger/many_loggers.yaml](configs
 You can also write your own logger.
 
 Lightning provides convenient method for logging custom metrics from inside LightningModule. Read the [docs](https://pytorch-lightning.readthedocs.io/en/latest/extensions/logging.html#automatic-logging) or take a look at [MNIST example](src/models/mnist_module.py).
-
-<br>
 
 ## Tests
 
@@ -766,8 +761,6 @@ Currently, the tests cover cases like:
 And many others. You should be able to modify them easily for your use case.
 
 There is also `@RunIf` decorator implemented, that allows you to run tests only if certain conditions are met, e.g. GPU is available or system is not windows. See the [examples](tests/test_train.py).
-
-<br>
 
 ## Hyperparameter Search
 
@@ -826,8 +819,6 @@ The `optimization_results.yaml` will be available under `logs/task_name/multirun
 
 This approach doesn't support resuming interrupted search and advanced techniques like prunning - for more sophisticated search and workflows, you should probably write a dedicated optimization task (without multirun feature).
 
-<br>
-
 ## Continuous Integration
 
 Template comes with CI workflows implemented in Github Actions:
@@ -835,8 +826,6 @@ Template comes with CI workflows implemented in Github Actions:
 - `.github/workflows/test.yaml`: running all tests with pytest
 - `.github/workflows/code-quality-main.yaml`: running pre-commits on main branch for all files
 - `.github/workflows/code-quality-pr.yaml`: running pre-commits on pull requests for modified files only
-
-<br>
 
 ## Distributed Training
 
@@ -849,8 +838,6 @@ python train.py trainer=ddp
 ```
 
 > **Note**: When using DDP you have to be careful how you write your models - read the [docs](https://lightning.ai/docs/pytorch/latest/advanced/speed.html).
-
-<br>
 
 ## Accessing Datamodule Attributes In Model
 
@@ -890,8 +877,6 @@ def on_train_start(self):
 
 > **Note**: This only works after the training starts since otherwise trainer won't be yet available in LightningModule.
 
-<br>
-
 ## Best Practices
 
 <details>
@@ -928,7 +913,8 @@ conda activate myenv
 <details>
 <summary><b>Use automatic code formatting</b></summary>
 
-Use pre-commit hooks to standardize code formatting of your project and save mental energy.<br>
+Use pre-commit hooks to standardize code formatting of your project and save mental energy.
+
 Simply install pre-commit package with:
 
 ```bash
@@ -960,7 +946,7 @@ pre-commit autoupdate
 <details>
 <summary><b>Set private environment variables in .env file</b></summary>
 
-System specific variables (e.g. absolute paths to datasets) should not be under version control or it will result in conflict between different users. Your private keys also shouldn't be versioned since you don't want them to be leaked.<br>
+System specific variables (e.g. absolute paths to datasets) should not be under version control or it will result in conflict between different users. Your private keys also shouldn't be versioned since you don't want them to be leaked.
 
 Template contains `.env.example` file, which serves as an example. Create a new file called `.env` (this name is excluded from version control in .gitignore).
 You should use it for storing environment variables like this:
@@ -1002,7 +988,6 @@ For example, instead of calculating accuracy by yourself, you should use the pro
 ```python
 from torchmetrics.classification.accuracy import Accuracy
 
-
 class LitModel(LightningModule):
     def __init__(self)
         self.train_acc = Accuracy()
@@ -1030,7 +1015,7 @@ Torchmetrics provides metrics for most use cases, like F1 score or confusion mat
 <details>
 <summary><b>Follow PyTorch Lightning style guide</b></summary>
 
-The style guide is available [here](https://pytorch-lightning.readthedocs.io/en/latest/starter/style_guide.html).<br>
+The style guide is available [here](https://pytorch-lightning.readthedocs.io/en/latest/starter/style_guide.html).
 
 1. Be explicit in your init. Try to define all the relevant defaults so that the user doesn’t have to guess. Provide type hints. This way your module is reusable across projects!
 
@@ -1089,7 +1074,8 @@ The style guide is available [here](https://pytorch-lightning.readthedocs.io/en/
 <details>
 <summary><b>Version control your data and models with DVC</b></summary>
 
-Use [DVC](https://dvc.org) to version control big files, like your data or trained ML models.<br>
+Use [DVC](https://dvc.org) to version control big files, like your data or trained ML models.
+
 To initialize the dvc repository:
 
 ```bash
@@ -1166,8 +1152,6 @@ hydra:
 
 </details>
 
-<br>
-
 ## Resources
 
 This template was inspired by:
@@ -1179,119 +1163,3 @@ This template was inspired by:
 Other useful repositories:
 
 - [jxpress/lightning-hydra-template-vertex-ai](https://github.com/jxpress/lightning-hydra-template-vertex-ai) - lightning-hydra-template integration with Vertex AI hyperparameter tuning and custom training job
-
-</details>
-
-<br>
-
-## License
-
-Lightning-Hydra-Template is licensed under the MIT License.
-
-```
-MIT License
-
-Copyright (c) 2021 ashleve
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-<br>
-<br>
-<br>
-<br>
-
-**DELETE EVERYTHING ABOVE FOR YOUR PROJECT**
-
-______________________________________________________________________
-
-<div align="center">
-
-# Your Project Name
-
-<a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white"></a>
-<a href="https://pytorchlightning.ai/"><img alt="Lightning" src="https://img.shields.io/badge/-Lightning-792ee5?logo=pytorchlightning&logoColor=white"></a>
-<a href="https://hydra.cc/"><img alt="Config: Hydra" src="https://img.shields.io/badge/Config-Hydra-89b8cd"></a>
-<a href="https://github.com/ashleve/lightning-hydra-template"><img alt="Template" src="https://img.shields.io/badge/-Lightning--Hydra--Template-017F2F?style=flat&logo=github&labelColor=gray"></a><br>
-[![Paper](http://img.shields.io/badge/paper-arxiv.1001.2234-B31B1B.svg)](https://www.nature.com/articles/nature14539)
-[![Conference](http://img.shields.io/badge/AnyConference-year-4b44ce.svg)](https://papers.nips.cc/paper/2020)
-
-</div>
-
-## Description
-
-What it does
-
-## Installation
-
-#### Pip
-
-```bash
-# clone project
-git clone https://github.com/YourGithubName/your-repo-name
-cd your-repo-name
-
-# [OPTIONAL] create conda environment
-conda create -n myenv python=3.9
-conda activate myenv
-
-# install pytorch according to instructions
-# https://pytorch.org/get-started/
-
-# install requirements
-pip install -r requirements.txt
-```
-
-#### Conda
-
-```bash
-# clone project
-git clone https://github.com/YourGithubName/your-repo-name
-cd your-repo-name
-
-# create conda environment and install dependencies
-conda env create -f environment.yaml -n myenv
-
-# activate conda environment
-conda activate myenv
-```
-
-## How to run
-
-Train model with default configuration
-
-```bash
-# train on CPU
-python src/train.py trainer=cpu
-
-# train on GPU
-python src/train.py trainer=gpu
-```
-
-Train model with chosen experiment configuration from [configs/experiment/](configs/experiment/)
-
-```bash
-python src/train.py experiment=experiment_name.yaml
-```
-
-You can override any parameter from command line like this
-
-```bash
-python src/train.py trainer.max_epochs=20 data.batch_size=64
-```
