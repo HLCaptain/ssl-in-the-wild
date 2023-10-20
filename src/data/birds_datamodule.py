@@ -11,9 +11,13 @@ import opendatasets as od
 from PIL import Image
 from pathlib import Path
 
-    
-def find_class_list(class_csv):
+""" Created classlist by a csv file.
+:param class_csv: The class list file path.
+"""   
+def find_class_list(class_csv: str):
+    # read file
     birds_100_csv = pd.read_csv(class_csv)
+    # select unique from labels list
     classes = birds_100_csv['labels'].unique()
     class_to_idx = {cls_name: i for i, cls_name in enumerate(classes)}
     return classes, class_to_idx
