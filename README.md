@@ -41,7 +41,7 @@ Difficulty: hard
 
 ## Installation
 
-The model training is currently not functioning, so the framework and container cannot be used. The files submitted for the Milestone 1 task are the `kaggle.json` and notebooks/Milestone1.ipynb files located in the root folder. Open the Milestone1.ipyn file in Colaboratory and run the code.
+The model training is currently not functioning, so the framework and container cannot be used. The files submitted for the Milestone 1 task are the `kaggle.json` and `notebooks/Milestone1.ipynb` files located in the root folder. Open the `Milestone1.ipynb` file in Colaboratory and run the code.
 
 ### Preparation
 
