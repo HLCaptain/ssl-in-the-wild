@@ -39,11 +39,14 @@ Related materials:
 
 Difficulty: hard
 
-## Preparation
+## Installation
+
+The model training is currently not functioning, so the framework and container cannot be used. The files submitted for the Milestone 1 task are the `kaggle.json` and notebooks/Milestone1.ipynb files located in the root folder. Open the Milestone1.ipyn file in Colaboratory and run the code.
+
+### Preparation
 
 After downloading and extracting the files, open the `kaggle.json` file (located in the root directory). Replace the <> placeholders with your own username-API key pair, and then save the changes. To obtain a Kaggle API key, log in to your [Kaggle](https://www.kaggle.com/) account and in the settings menu, generate a new kaggle.json file containing the API token. Replace the values in the `kaggle.json` file.
 
-## Installation
 
 The project contains a `Dockerfile` you can run to train and evaluate models. You can also use the commands below to install the project locally.
 
