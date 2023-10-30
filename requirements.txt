@@ -21,6 +21,8 @@ rootutils       # standardizing the project root setup
 pre-commit      # hooks for applying linters on commit
 rich            # beautiful text formatting in terminal
 pytest          # tests
+chardet		# character encoding detector
+types-chardet	# type stub package for the chardet package
 # sh            # for running bash commands in some tests (linux/macos only)
 
 # --------- load data --------- #
@@ -28,3 +30,4 @@ opendatasets>=0.1.22 # downloading datasets from online sources like Kaggle
 
 # --------- visualization --------- #
 pandas>=1.5.3 # data structures and data analysis tools
+matplotlib>=3.8.0
