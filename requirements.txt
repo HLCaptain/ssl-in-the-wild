@@ -1,3 +1,6 @@
+# --------- ssl --------- #
+lightly>=1.4.21
+
 # --------- pytorch --------- #
 torch>=2.0.0
 torchvision>=0.15.0
@@ -17,10 +20,13 @@ wandb
 # aim>=3.16.2  # no lower than 3.16.2, see https://github.com/aimhubio/aim/issues/2550
 
 # --------- others --------- #
+traitlets==5.9.0
 rootutils       # standardizing the project root setup
 pre-commit      # hooks for applying linters on commit
 rich            # beautiful text formatting in terminal
 pytest          # tests
+chardet		# character encoding detector
+types-chardet	# type stub package for the chardet package
 # sh            # for running bash commands in some tests (linux/macos only)
 
 # --------- load data --------- #
@@ -28,3 +34,4 @@ opendatasets>=0.1.22 # downloading datasets from online sources like Kaggle
 
 # --------- visualization --------- #
 pandas>=1.5.3 # data structures and data analysis tools
+matplotlib>=3.8.0
