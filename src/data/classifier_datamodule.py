@@ -193,6 +193,7 @@ class ClassifierDataModule(LightningDataModule):
             pin_memory=self.hparams.pin_memory,
             drop_last=True,
             shuffle=True,
+            persistent_workers=True,
         )
 
     def val_dataloader(self) -> DataLoader[Any]:
@@ -207,6 +208,7 @@ class ClassifierDataModule(LightningDataModule):
             pin_memory=self.hparams.pin_memory,
             drop_last=False,
             shuffle=False,
+            persistent_workers=True,
         )
 
     def test_dataloader(self) -> DataLoader[Any]:
@@ -221,6 +223,7 @@ class ClassifierDataModule(LightningDataModule):
             pin_memory=self.hparams.pin_memory,
             drop_last=False,
             shuffle=False,
+            persistent_workers=True,
         )
 
     def teardown(self, stage: Optional[str] = None) -> None:
