@@ -5,10 +5,10 @@
 defaults:
   - _self_
   - data: birds
-  - model: mnist
-  - callbacks: default
+  - model: vicreg
+  - callbacks: vicreg_callback
   - logger: null # set logger here or use command line (e.g. `python train.py logger=tensorboard`)
-  - trainer: default
+  - trainer: gpu
   - paths: default
   - extras: default
   - hydra: default
@@ -43,7 +43,7 @@ train: True
 test: True
 
 # simply provide checkpoint path to resume training
-ckpt_path: null
+ckpt_path: $'{paths.output_dir}/models/best_model_vicreg.ckpt'
 
 # seed for random number generators in pytorch, numpy and python.random
 seed: null
