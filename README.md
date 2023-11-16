@@ -39,14 +39,34 @@ Related materials:
 
 Difficulty: hard
 
+## Milestone 2
+
+### How to run the pipeline
+
+You should be running the repository locally to properly run the pipeline. Use `pip` or `miniconda` to install the dependencies.
+
+#### Data download and preparation
+
+Run all cells in the `notebooks/Milestone1.ipynb` file to download and prepare the data into the `data` folder in the root.
+
+### Train and test the models
+
+Run the `notebooks/Milestone2_training_testing.ipynb` file to train and test the models on the downloaded dataset. You can also load in a checkpoint from a commented out cell.
+
 ## Installation
 
-The model training is currently not functioning, so the framework and container cannot be used. The files submitted for the Milestone 1 task are the `kaggle.json` and `notebooks/Milestone1.ipynb` files located in the root folder. Open the `Milestone1.ipynb` file in Colaboratory and run the code.
+Install required dependencies from `requirements.txt` file:
+
+```bash
+# with pip
+pip install -r requirements.txt
+```
+
+The model training is limited to Jupiter Notebooks only, so container cannot be used. The files submitted for the Milestone 1 task are the `kaggle.json` and `notebooks/Milestone1.ipynb` files located in the root folder. Open the `Milestone1.ipynb` file and run the code. This should download the dataset to `data` folder, which the `notebooks/Milestone2_training_testing.ipynb` Notebook can use to train and test the models with.
 
 ### Preparation
 
 After downloading and extracting the files, open the `kaggle.json` file (located in the root directory). Replace the <> placeholders with your own username-API key pair, and then save the changes. To obtain a Kaggle API key, log in to your [Kaggle](https://www.kaggle.com/) account and in the settings menu, generate a new kaggle.json file containing the API token. Replace the values in the `kaggle.json` file.
-
 
 The project contains a `Dockerfile` you can run to train and evaluate models. You can also use the commands below to install the project locally.
 
