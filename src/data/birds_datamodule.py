@@ -6,6 +6,7 @@ from torch.utils.data import ConcatDataset, DataLoader, Dataset, random_split
 import torchvision
 from lightly.data import LightlyDataset
 from lightly.transforms import utils
+from lightly.transforms.vicreg_transform import VICRegTransform
 
 import os
 import pandas as pd
@@ -187,20 +188,8 @@ class BirdsDataModule(LightningDataModule):
             pin_memory=self.hparams.pin_memory,
             drop_last=True,
             shuffle=True,
+            persistent_workers=True,
         )
-    # def train_dataloader_classifier(self) -> DataLoader[Any]:
-    #     """Create and return the train dataloader.
-
-    #     :return: The train dataloader.
-    #     """
-    #     return DataLoader(
-    #         dataset=self.dataset_train_classifier,
-    #         batch_size=self.batch_size_per_device,
-    #         num_workers=self.hparams.num_workers,
-    #         pin_memory=self.hparams.pin_memory,
-    #         drop_last=True,
-    #         shuffle=True,
-    #     )
 
     def val_dataloader(self) -> DataLoader[Any]:
         """Create and return the validation dataloader.
@@ -214,6 +203,7 @@ class BirdsDataModule(LightningDataModule):
             pin_memory=self.hparams.pin_memory,
             drop_last=False,
             shuffle=False,
+            persistent_workers=True,
         )
 
     def test_dataloader(self) -> DataLoader[Any]:
@@ -228,6 +218,7 @@ class BirdsDataModule(LightningDataModule):
             pin_memory=self.hparams.pin_memory,
             drop_last=False,
             shuffle=False,
+            persistent_workers=True,
         )
 
     def teardown(self, stage: Optional[str] = None) -> None:
