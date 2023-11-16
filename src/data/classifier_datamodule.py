@@ -69,7 +69,7 @@ def find_class_list(class_csv: str):
 #         else:
 #           return img, class_idx # return data, label (X, y)
 
-class BirdsDataModule(LightningDataModule):
+class ClassifierDataModule(LightningDataModule):
     """`LightningDataModule` for the BIRDS 525 SPECIES- IMAGE CLASSIFICATION dataset.
     """
 
@@ -95,9 +95,16 @@ class BirdsDataModule(LightningDataModule):
         self.save_hyperparameters(logger=False)
 
         # data transformations
-        self.train_vicreg_transform = VICRegTransform(
-            input_size=32,
-            gaussian_blur=0.0,
+        self.train_classifier_transforms = torchvision.transforms.Compose(
+            [
+                torchvision.transforms.RandomCrop(32, padding=4),
+                torchvision.transforms.RandomHorizontalFlip(),
+                torchvision.transforms.ToTensor(),
+                torchvision.transforms.Normalize(
+                    mean=utils.IMAGENET_NORMALIZE["mean"],
+                    std=utils.IMAGENET_NORMALIZE["std"],
+                ),
+            ]
         )
 
         # No additional augmentations for the test set
@@ -164,8 +171,7 @@ class BirdsDataModule(LightningDataModule):
             birds_100_csv_path = image_dir_path / "birds.csv"
             train_dir = image_dir_path / "train"
             test_dir = image_dir_path / "test"
-            val_dir = image_dir_path / "valid"
-            self.dataset_train_vicreg = LightlyDataset(input_dir=train_dir, transform=train_vicreg_transform)
+            self.dataset_train_classifier = LightlyDataset(input_dir=train_dir, transform=train_classifier_transforms)
             self.dataset_valid = LightlyDataset(input_dir=val_dir, transform=test_transforms)
             self.dataset_test = LightlyDataset(input_dir=test_dir, transform=test_transforms)
             # dataset = ConcatDataset(datasets=[trainset, testset, valset])
@@ -176,31 +182,18 @@ class BirdsDataModule(LightningDataModule):
             # )
 
     def train_dataloader(self) -> DataLoader[Any]:
-        """Create and return the vicReg train dataloader.
+        """Create and return the train dataloader.
 
         :return: The train dataloader.
         """
         return DataLoader(
-            dataset=self.dataset_train_vicreg,
+            dataset=self.dataset_train_classifier,
             batch_size=self.batch_size_per_device,
             num_workers=self.hparams.num_workers,
             pin_memory=self.hparams.pin_memory,
             drop_last=True,
             shuffle=True,
         )
-    # def train_dataloader_classifier(self) -> DataLoader[Any]:
-    #     """Create and return the train dataloader.
-
-    #     :return: The train dataloader.
-    #     """
-    #     return DataLoader(
-    #         dataset=self.dataset_train_classifier,
-    #         batch_size=self.batch_size_per_device,
-    #         num_workers=self.hparams.num_workers,
-    #         pin_memory=self.hparams.pin_memory,
-    #         drop_last=True,
-    #         shuffle=True,
-    #     )
 
     def val_dataloader(self) -> DataLoader[Any]:
         """Create and return the validation dataloader.
@@ -256,4 +249,4 @@ class BirdsDataModule(LightningDataModule):
 
 
 if __name__ == "__main__":
-    _ = BirdsDataModule()
+    _ = ClassifierDataModule()
