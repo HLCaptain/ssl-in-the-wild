@@ -12,13 +12,19 @@ class ClassifierModule(LightningModule):
     Docs:
         https://lightning.ai/docs/pytorch/latest/common/lightning_module.html
     """
-    def __init__(self, backbone) -> None:
+    def __init__(
+        self, 
+        backbone: LightningModule,
+        num_classes : Int = 525,
+        max_epochs: Int = 100
+    ) -> None:
         super().__init__()
         # this line allows to access init params with 'self.hparams' attribute
         self.save_hyperparameters(logger=False)
 
         # use the pretrained ResNet backbone
         self.backbone = backbone
+        self.max_epochs = max_epochs
 
         # freeze the backbone
         deactivate_requires_grad(backbone)
@@ -52,16 +58,6 @@ class ClassifierModule(LightningModule):
         loss = self.criterion(y_hat, y)
         self.log("classifier_loss", loss)
         return loss
-
-    def on_train_epoch_end(self):
-        "Lightning hook that is called when a training epoch ends."
-        self.custom_histogram_weights()
-
-    # We provide a helper method to log weights in tensorboard
-    # which is useful for debugging.
-    def custom_histogram_weights(self):
-        for name, params in self.named_parameters():
-            self.logger.experiment.add_histogram(name, params, self.current_epoch)
             
     def validation_step(self, batch: Tuple[torch.Tensor, torch.Tensor], batch_idx: int) -> None:
         """Perform a single validation step on a batch of data from the validation set.
@@ -95,8 +91,9 @@ class ClassifierModule(LightningModule):
             self.validation_step_outputs.clear()
 
     def configure_optimizers(self):
-        optimizer = torch.optim.SGD(self.parameters(), lr=0.06)
-        return optimizer
+        optim = torch.optim.SGD(self.fc.parameters(), lr=30.0)
+        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optim, self.max_epochs)
+        return [optim], [scheduler]
 
 
 if __name__ == "__main__":
