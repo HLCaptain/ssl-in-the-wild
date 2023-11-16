@@ -5,7 +5,7 @@ defaults:
   - data: classifier # choose datamodule with `test_dataloader()` for evaluation
   - model: classifier
   - logger: null
-  - trainer: gpu
+  - trainer: default
   - paths: default
   - extras: default
   - hydra: default
