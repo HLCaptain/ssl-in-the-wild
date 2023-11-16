@@ -165,15 +165,9 @@ class BirdsDataModule(LightningDataModule):
             train_dir = image_dir_path / "train"
             test_dir = image_dir_path / "test"
             val_dir = image_dir_path / "valid"
-            self.dataset_train_vicreg = LightlyDataset(input_dir=train_dir, transform=train_vicreg_transform)
-            self.dataset_valid = LightlyDataset(input_dir=val_dir, transform=test_transforms)
-            self.dataset_test = LightlyDataset(input_dir=test_dir, transform=test_transforms)
-            # dataset = ConcatDataset(datasets=[trainset, testset, valset])
-            # self.data_train, self.data_val, self.data_test = random_split(
-            #     dataset=dataset,
-            #     lengths=self.hparams.train_val_test_split,
-            #     generator=torch.Generator().manual_seed(42),
-            # )
+            self.dataset_train_vicreg = LightlyDataset(input_dir=train_dir, transform=self.train_vicreg_transform)
+            self.dataset_valid = LightlyDataset(input_dir=val_dir, transform=self.test_transforms)
+            self.dataset_test = LightlyDataset(input_dir=test_dir, transform=self.test_transforms)
 
     def train_dataloader(self) -> DataLoader[Any]:
         """Create and return the vicReg train dataloader.
@@ -187,36 +181,6 @@ class BirdsDataModule(LightningDataModule):
             pin_memory=self.hparams.pin_memory,
             drop_last=True,
             shuffle=True,
-            persistent_workers=True,
-        )
-
-    def val_dataloader(self) -> DataLoader[Any]:
-        """Create and return the validation dataloader.
-
-        :return: The validation dataloader.
-        """
-        return DataLoader(
-            dataset=self.dataset_valid,
-            batch_size=self.batch_size_per_device,
-            num_workers=self.hparams.num_workers,
-            pin_memory=self.hparams.pin_memory,
-            drop_last=False,
-            shuffle=False,
-            persistent_workers=True,
-        )
-
-    def test_dataloader(self) -> DataLoader[Any]:
-        """Create and return the test dataloader.
-
-        :return: The test dataloader.
-        """
-        return DataLoader(
-            dataset=self.dataset_test,
-            batch_size=self.batch_size_per_device,
-            num_workers=self.hparams.num_workers,
-            pin_memory=self.hparams.pin_memory,
-            drop_last=False,
-            shuffle=False,
             persistent_workers=True,
         )
 

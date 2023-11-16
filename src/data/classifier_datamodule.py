@@ -171,15 +171,9 @@ class ClassifierDataModule(LightningDataModule):
             birds_100_csv_path = image_dir_path / "birds.csv"
             train_dir = image_dir_path / "train"
             test_dir = image_dir_path / "test"
-            self.dataset_train_classifier = LightlyDataset(input_dir=train_dir, transform=train_classifier_transforms)
-            self.dataset_valid = LightlyDataset(input_dir=val_dir, transform=test_transforms)
-            self.dataset_test = LightlyDataset(input_dir=test_dir, transform=test_transforms)
-            # dataset = ConcatDataset(datasets=[trainset, testset, valset])
-            # self.data_train, self.data_val, self.data_test = random_split(
-            #     dataset=dataset,
-            #     lengths=self.hparams.train_val_test_split,
-            #     generator=torch.Generator().manual_seed(42),
-            # )
+            self.dataset_train_classifier = LightlyDataset(input_dir=train_dir, transform=self.train_classifier_transforms)
+            self.dataset_valid = LightlyDataset(input_dir=val_dir, transform=self.test_transforms)
+            self.dataset_test = LightlyDataset(input_dir=test_dir, transform=self.test_transforms)
 
     def train_dataloader(self) -> DataLoader[Any]:
         """Create and return the train dataloader.
