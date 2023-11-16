@@ -39,9 +39,30 @@ Related materials:
 
 Difficulty: hard
 
+## Milestone 2
+
+### How to run the pipeline
+
+You should be running the repository locally to properly run the pipeline. Use `pip` or `miniconda` to install the dependencies.
+
+#### Data download and preparation
+
+Run all cells in the `notebooks/Milestone1.ipynb` file to download and prepare the data into the `data` folder in the root.
+
+### Train and test the models
+
+Run the `notebooks/Milestone2_training_testing.ipynb` file to train and test the models on the downloaded dataset. You can also load in a checkpoint from a commented out cell.
+
 ## Installation
 
-The model training is limited to Jupiter Notebooks only, so container cannot be used. The files submitted for the Milestone 1 task are the `kaggle.json` and `notebooks/Milestone1.ipynb` files located in the root folder. Open the `Milestone1.ipynb` file in Colaboratory and run the code. This should download the dataset to `data` folder, which the `notebooks/Milestone2_training_testing.ipynb` Notebook can use to train and test the models with.
+Install required dependencies from `requirements.txt` file:
+
+```bash
+# with pip
+pip install -r requirements.txt
+```
+
+The model training is limited to Jupiter Notebooks only, so container cannot be used. The files submitted for the Milestone 1 task are the `kaggle.json` and `notebooks/Milestone1.ipynb` files located in the root folder. Open the `Milestone1.ipynb` file and run the code. This should download the dataset to `data` folder, which the `notebooks/Milestone2_training_testing.ipynb` Notebook can use to train and test the models with.
 
 ### Preparation
 
