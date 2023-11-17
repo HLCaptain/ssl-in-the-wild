@@ -6,11 +6,6 @@ defaults:
 # https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.callbacks.ModelCheckpoint.html
 model_checkpoint:
   _target_: lightning.pytorch.callbacks.ModelCheckpoint
-  dirpath: $'{paths.output_dir}/models' # directory to save the model file
+  dirpath: ${paths.output_dir}/models # directory to save the model file
   filename: 'best_model_vicreg' # checkpoint filename
   monitor: 'vicreg_loss' # name of the logged metric which determines when model is improving
-  verbose: False # verbosity mode
-  save_top_k: 1 # save k best models (determined by above metric)
-  mode: "min" # "max" means higher metric value is better, can be also "min"
-  auto_insert_metric_name: True # when True, the checkpoints filenames will contain the metric name
-  save_weights_only: False # if True, then only the model’s weights will be saved

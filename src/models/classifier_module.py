@@ -6,6 +6,13 @@ from torchmetrics import MaxMetric, MeanMetric
 from torchmetrics.classification.accuracy import Accuracy
 import torchvision
 from torch import nn
+from lightly.models.utils import (
+    batch_shuffle,
+    batch_unshuffle,
+    deactivate_requires_grad,
+    update_momentum,
+)
+from vicreg_module import VICRegModule
 
 class ClassifierModule(LightningModule):
     """Classification `LightningModule` for the BIRDS 525 SPECIES- IMAGE CLASSIFICATION dataset.
@@ -14,16 +21,21 @@ class ClassifierModule(LightningModule):
     """
     def __init__(
         self, 
-        backbone: LightningModule,
-        num_classes : Int = 525,
-        max_epochs: Int = 100
+        backbone_ckpt_path: str,
+        num_classes : int = 525,
+        max_epochs: int = 100
     ) -> None:
         super().__init__()
         # this line allows to access init params with 'self.hparams' attribute
         self.save_hyperparameters(logger=False)
 
+        ckpt_path = backbone_ckpt_path
+        model = VICRegModule()
+        model.load_state_dict(torch.load(ckpt_path, map_location=torch.device('cpu'))['state_dict'])
+        model.eval()
+
         # use the pretrained ResNet backbone
-        self.backbone = backbone
+        self.backbone = model.backbone
         self.max_epochs = max_epochs
 
         # freeze the backbone

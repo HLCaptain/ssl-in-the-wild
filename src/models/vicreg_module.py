@@ -43,10 +43,6 @@ class VICRegModule(LightningModule):
         # loss function
         self.criterion = VICRegLoss()
 
-    def getBackbone() -> LightningModule:
-        self.eval()
-        return self.backbone
-
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Perform a forward pass through.
 
