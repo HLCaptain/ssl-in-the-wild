@@ -12,7 +12,7 @@ from lightly.models.utils import (
     deactivate_requires_grad,
     update_momentum,
 )
-from vicreg_module import VICRegModule
+from src.models.vicreg_module import VICRegModule
 
 class ClassifierModule(LightningModule):
     """Classification `LightningModule` for the BIRDS 525 SPECIES- IMAGE CLASSIFICATION dataset.
@@ -39,7 +39,7 @@ class ClassifierModule(LightningModule):
         self.max_epochs = max_epochs
 
         # freeze the backbone
-        deactivate_requires_grad(backbone)
+        deactivate_requires_grad(self.backbone)
 
         # create a linear layer for our downstream classification model
         self.fc = nn.Linear(512, num_classes)
