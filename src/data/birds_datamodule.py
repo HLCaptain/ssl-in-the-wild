@@ -25,6 +25,9 @@ def find_class_list(class_csv: str):
     class_to_idx = {cls_name: i for i, cls_name in enumerate(classes)}
     return classes, class_to_idx
 
+def getNum_workers():
+    return os.cpu_count()
+
 class BirdsDataModule(LightningDataModule):
     """`LightningDataModule` for the BIRDS 525 SPECIES- IMAGE CLASSIFICATION dataset.
     """
@@ -49,6 +52,8 @@ class BirdsDataModule(LightningDataModule):
         # also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False)
         self.num_workers = num_workers
+        if(num_workers > getNum_workers()):
+            self.num_workers = getNum_workers()
         self.pin_memory = pin_memory
 
         # data transformations
