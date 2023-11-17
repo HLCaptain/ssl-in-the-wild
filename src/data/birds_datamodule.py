@@ -2,7 +2,7 @@ from typing import Any, Dict, Optional, Tuple
 
 import torch
 from lightning import LightningDataModule
-from torch.utils.data import ConcatDataset, DataLoader, Dataset, random_split
+from torch.utils.data import DataLoader, Dataset
 import torchvision
 from lightly.data import LightlyDataset
 from lightly.transforms import utils
@@ -25,50 +25,8 @@ def find_class_list(class_csv: str):
     class_to_idx = {cls_name: i for i, cls_name in enumerate(classes)}
     return classes, class_to_idx
 
-# class ImageFolderCustom(Dataset):
-#     """ Costum ImageFolder. Original code from https://www.learnpytorch.io/04_pytorch_custom_datasets/.
-#     """
-
-#     def __init__(self, class_csv: str, targ_dir: str, transform=None) -> None:
-#         """ Initialize a ImageFolderCustom with a targ_dir and transform (optional) parameter.
-
-#         :param class_csv: The class list file path.
-#         :param targ_dir: The images directory.
-#         :param transform: Image transformation steps.
-#         """
-#         # Get all image paths
-#         self.paths = list(Path(targ_dir).glob("*/*.jpg"))
-#         # Setup transforms
-#         self.transform = transform
-#         # Create classes and class_to_idx attributes
-#         self.classes, self.class_to_idx = find_class_list(class_csv)
-
-#     def load_image(self, index: int) -> Image.Image:
-#         """ Load images by indexes from paths.
-
-#         :param index: The image path index
-#         """
-#         image_path = self.paths[index]
-#         return Image.open(image_path)
-
-#     def __len__(self) -> int:
-#         """ Returns the total number of samples.
-#         """
-#         return len(self.paths)
-
-#     def __getitem__(self, index: int) -> Tuple[torch.Tensor, int]:
-#         """ Returns one sample of data, data and label (X, y). 
-#         :param index: The image path index
-#         """
-#         img = self.load_image(index)
-#         class_name  = self.paths[index].parent.name # expects path in data_folder/class_name/image.jpeg
-#         class_idx = self.class_to_idx[class_name]
-
-#         # Transform if necessary
-#         if self.transform:
-#           return self.transform(img), class_idx # return data, label (X, y)
-#         else:
-#           return img, class_idx # return data, label (X, y)
+def getNum_workers():
+    return os.cpu_count()
 
 class BirdsDataModule(LightningDataModule):
     """`LightningDataModule` for the BIRDS 525 SPECIES- IMAGE CLASSIFICATION dataset.
@@ -93,6 +51,10 @@ class BirdsDataModule(LightningDataModule):
         # this line allows to access init params with 'self.hparams' attribute
         # also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False)
+        self.num_workers = num_workers
+        if(num_workers > getNum_workers()):
+            self.num_workers = getNum_workers()
+        self.pin_memory = pin_memory
 
         # data transformations
         self.train_vicreg_transform = VICRegTransform(
@@ -177,8 +139,8 @@ class BirdsDataModule(LightningDataModule):
         return DataLoader(
             dataset=self.dataset_train_vicreg,
             batch_size=self.batch_size_per_device,
-            num_workers=self.hparams.num_workers,
-            pin_memory=self.hparams.pin_memory,
+            num_workers=self.num_workers,
+            pin_memory=self.pin_memory,
             drop_last=True,
             shuffle=True,
             persistent_workers=True,
