@@ -109,4 +109,4 @@ class ClassifierModule(LightningModule):
 
 
 if __name__ == "__main__":
-    _ = ClassifierModule()
+    _ = ClassifierModule(None, None, None)

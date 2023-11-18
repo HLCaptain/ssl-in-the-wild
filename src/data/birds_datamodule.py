@@ -26,7 +26,10 @@ def find_class_list(class_csv: str):
     return classes, class_to_idx
 
 def getNum_workers():
-    return os.cpu_count()
+    workers = 1
+    if(os.cpu_count() > workers):
+        workers = os.cpu_count()-1
+    return workers
 
 class BirdsDataModule(LightningDataModule):
     """`LightningDataModule` for the BIRDS 525 SPECIES- IMAGE CLASSIFICATION dataset.

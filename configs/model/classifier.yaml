@@ -1,4 +1,4 @@
 _target_: src.models.classifier_module.ClassifierModule
-backbone_ckpt_path: "${paths.data_dir}/models/best_model_vicreg.ckpt"
+backbone_ckpt_path: "${paths.data_dir}models/best_model_vicreg.ckpt"
 num_classes: 525
 max_epochs: 100
