@@ -6,7 +6,6 @@ from torch.utils.data import DataLoader, Dataset
 import torchvision
 from lightly.data import LightlyDataset
 from lightly.transforms import utils
-from lightly.transforms.vicreg_transform import VICRegTransform
 
 import os
 import pandas as pd
@@ -31,13 +30,14 @@ def getNum_workers():
         workers = os.cpu_count()-1
     return workers
 
-class BirdsDataModule(LightningDataModule):
+class ClassifierDataModule(LightningDataModule):
     """`LightningDataModule` for the BIRDS 525 SPECIES- IMAGE CLASSIFICATION dataset.
     """
 
     def __init__(
         self,
         data_dir: str = "data/",
+        # train_val_test_split: Tuple[float, float, float] = (0.8, 0.1, 0.1),
         batch_size: int = 64,
         num_workers: int = 0,
         pin_memory: bool = False,
@@ -60,9 +60,16 @@ class BirdsDataModule(LightningDataModule):
         self.pin_memory = pin_memory
 
         # data transformations
-        self.train_vicreg_transform = VICRegTransform(
-            input_size=32,
-            gaussian_blur=0.0,
+        self.train_classifier_transforms = torchvision.transforms.Compose(
+            [
+                torchvision.transforms.RandomCrop(32, padding=4),
+                torchvision.transforms.RandomHorizontalFlip(),
+                torchvision.transforms.ToTensor(),
+                torchvision.transforms.Normalize(
+                    mean=utils.IMAGENET_NORMALIZE["mean"],
+                    std=utils.IMAGENET_NORMALIZE["std"],
+                ),
+            ]
         )
 
         # No additional augmentations for the test set
@@ -130,22 +137,52 @@ class BirdsDataModule(LightningDataModule):
             train_dir = image_dir_path / "train"
             test_dir = image_dir_path / "test"
             val_dir = image_dir_path / "valid"
-            self.dataset_train_vicreg = LightlyDataset(input_dir=train_dir, transform=self.train_vicreg_transform)
+            self.dataset_train_classifier = LightlyDataset(input_dir=train_dir, transform=self.train_classifier_transforms)
             self.dataset_valid = LightlyDataset(input_dir=val_dir, transform=self.test_transforms)
             self.dataset_test = LightlyDataset(input_dir=test_dir, transform=self.test_transforms)
 
     def train_dataloader(self) -> DataLoader[Any]:
-        """Create and return the vicReg train dataloader.
+        """Create and return the train dataloader.
 
         :return: The train dataloader.
         """
         return DataLoader(
-            dataset=self.dataset_train_vicreg,
+            dataset=self.dataset_train_classifier,
             batch_size=self.batch_size_per_device,
             num_workers=self.num_workers,
             pin_memory=self.pin_memory,
             drop_last=True,
             shuffle=True,
+            persistent_workers=True,
+        )
+
+    def val_dataloader(self) -> DataLoader[Any]:
+        """Create and return the validation dataloader.
+
+        :return: The validation dataloader.
+        """
+        return DataLoader(
+            dataset=self.dataset_valid,
+            batch_size=self.batch_size_per_device,
+            num_workers=self.num_workers,
+            pin_memory=self.pin_memory,
+            drop_last=False,
+            shuffle=False,
+            persistent_workers=True,
+        )
+
+    def test_dataloader(self) -> DataLoader[Any]:
+        """Create and return the test dataloader.
+
+        :return: The test dataloader.
+        """
+        return DataLoader(
+            dataset=self.dataset_test,
+            batch_size=self.batch_size_per_device,
+            num_workers=self.num_workers,
+            pin_memory=self.pin_memory,
+            drop_last=False,
+            shuffle=False,
             persistent_workers=True,
         )
 
@@ -175,4 +212,4 @@ class BirdsDataModule(LightningDataModule):
 
 
 if __name__ == "__main__":
-    _ = BirdsDataModule()
+    _ = ClassifierDataModule()

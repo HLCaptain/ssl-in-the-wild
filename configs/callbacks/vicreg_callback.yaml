@@ -1,0 +1,17 @@
+defaults:
+  - default
+  - _self_
+
+
+# https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.callbacks.ModelCheckpoint.html
+model_checkpoint:
+  _target_: lightning.pytorch.callbacks.ModelCheckpoint
+  dirpath: ${paths.data_dir}models # directory to save the model file
+  filename: 'best_model_vicreg' # checkpoint filename
+  monitor: 'vicreg_loss' # name of the logged metric which determines when model is improving
+  mode: "min"
+
+early_stopping:
+  monitor: "vicreg_loss"
+  patience: 100
+  mode: "min"
