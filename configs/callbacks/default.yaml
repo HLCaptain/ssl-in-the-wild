@@ -6,7 +6,7 @@ defaults:
   - _self_
 
 model_checkpoint:
-  dirpath: ${paths.output_dir}/checkpoints
+  dirpath: ${paths.checkpoint_dir}
   filename: "epoch_{epoch:03d}"
   monitor: "val/acc"
   mode: "max"
