@@ -67,7 +67,8 @@ class ClassifierModule(LightningModule):
         :return: A tensor of losses between model predictions and targets.
         """
         x, y, _ = batch
-        y_hat = self.forward(x)
+        # x is list[torch.Tensor]
+        y_hat = self.forward(x[0])
         loss = self.criterion(y_hat, y)
         self.log("classifier_loss", loss)
         return loss

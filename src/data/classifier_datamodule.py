@@ -15,7 +15,7 @@ from pathlib import Path
 
 """ Created classlist by a csv file.
 :param class_csv: The class list file path.
-"""   
+"""
 def find_class_list(class_csv: str):
     # read file
     birds_100_csv = pd.read_csv(class_csv)
@@ -130,15 +130,17 @@ class ClassifierDataModule(LightningDataModule):
                 )
             self.batch_size_per_device = self.hparams.batch_size // self.trainer.world_size
 
+        image_dir_path = Path(self.data_dir + "100-bird-species/")
+        birds_100_csv_path = image_dir_path / "birds.csv"
+        train_dir = image_dir_path / "train"
+        test_dir = image_dir_path / "test"
+        val_dir = image_dir_path / "valid"
         # load and split datasets only if not loaded already
-        if not self.data_train and not self.data_val and not self.data_test:
-            image_dir_path = Path(self.data_dir + "100-bird-species/")
-            birds_100_csv_path = image_dir_path / "birds.csv"
-            train_dir = image_dir_path / "train"
-            test_dir = image_dir_path / "test"
-            val_dir = image_dir_path / "valid"
+        if self.data_train is None:
             self.dataset_train_classifier = LightlyDataset(input_dir=train_dir, transform=self.train_classifier_transforms)
+        if self.data_val is None:
             self.dataset_valid = LightlyDataset(input_dir=val_dir, transform=self.test_transforms)
+        if self.data_test is None:
             self.dataset_test = LightlyDataset(input_dir=test_dir, transform=self.test_transforms)
 
     def train_dataloader(self) -> DataLoader[Any]:
