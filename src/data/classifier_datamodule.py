@@ -40,6 +40,7 @@ class ClassifierDataModule(LightningDataModule):
         # train_val_test_split: Tuple[float, float, float] = (0.8, 0.1, 0.1),
         batch_size: int = 64,
         num_workers: int = 0,
+        persistent_workers: bool = True,
         pin_memory: bool = False,
     ) -> None:
         """Initialize a `BirdsDataModule`.
@@ -55,8 +56,9 @@ class ClassifierDataModule(LightningDataModule):
         # also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False)
         self.num_workers = num_workers
-        if(num_workers > getNum_workers()):
+        if num_workers > getNum_workers():
             self.num_workers = getNum_workers()
+        self.persistent_workers = persistent_workers
         self.pin_memory = pin_memory
 
         # data transformations
@@ -155,7 +157,7 @@ class ClassifierDataModule(LightningDataModule):
             pin_memory=self.pin_memory,
             drop_last=True,
             shuffle=True,
-            persistent_workers=True,
+            persistent_workers=self.persistent_workers,
         )
 
     def val_dataloader(self) -> DataLoader[Any]:
@@ -170,7 +172,7 @@ class ClassifierDataModule(LightningDataModule):
             pin_memory=self.pin_memory,
             drop_last=False,
             shuffle=False,
-            persistent_workers=True,
+            persistent_workers=self.persistent_workers,
         )
 
     def test_dataloader(self) -> DataLoader[Any]:
@@ -185,7 +187,7 @@ class ClassifierDataModule(LightningDataModule):
             pin_memory=self.pin_memory,
             drop_last=False,
             shuffle=False,
-            persistent_workers=True,
+            persistent_workers=self.persistent_workers,
         )
 
     def teardown(self, stage: Optional[str] = None) -> None:
