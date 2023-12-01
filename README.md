@@ -130,7 +130,7 @@ Train model with default configuration
 python src/train.py
 
 # train Classifier with VICREG backbone
-python src/train.py model=classifier callbacks=classifier_train_callback
+python src/train.py model=classifier callbacks=classifier_train_callback hparams_search=classifier_optuna
 
 # evaluate model on test dataset
 python src/eval.py model=classifier callbacks=classifier_eval_callback
