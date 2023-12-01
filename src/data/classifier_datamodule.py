@@ -15,7 +15,7 @@ from pathlib import Path
 
 """ Created classlist by a csv file.
 :param class_csv: The class list file path.
-"""   
+"""
 def find_class_list(class_csv: str):
     # read file
     birds_100_csv = pd.read_csv(class_csv)
@@ -40,6 +40,7 @@ class ClassifierDataModule(LightningDataModule):
         # train_val_test_split: Tuple[float, float, float] = (0.8, 0.1, 0.1),
         batch_size: int = 64,
         num_workers: int = 0,
+        persistent_workers: bool = True,
         pin_memory: bool = False,
     ) -> None:
         """Initialize a `BirdsDataModule`.
@@ -55,8 +56,9 @@ class ClassifierDataModule(LightningDataModule):
         # also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False)
         self.num_workers = num_workers
-        if(num_workers > getNum_workers()):
+        if num_workers > getNum_workers():
             self.num_workers = getNum_workers()
+        self.persistent_workers = persistent_workers
         self.pin_memory = pin_memory
 
         # data transformations
@@ -130,15 +132,17 @@ class ClassifierDataModule(LightningDataModule):
                 )
             self.batch_size_per_device = self.hparams.batch_size // self.trainer.world_size
 
+        image_dir_path = Path(self.data_dir + "100-bird-species/")
+        birds_100_csv_path = image_dir_path / "birds.csv"
+        train_dir = image_dir_path / "train"
+        test_dir = image_dir_path / "test"
+        val_dir = image_dir_path / "valid"
         # load and split datasets only if not loaded already
-        if not self.data_train and not self.data_val and not self.data_test:
-            image_dir_path = Path(self.data_dir + "100-bird-species/")
-            birds_100_csv_path = image_dir_path / "birds.csv"
-            train_dir = image_dir_path / "train"
-            test_dir = image_dir_path / "test"
-            val_dir = image_dir_path / "valid"
+        if self.data_train is None:
             self.dataset_train_classifier = LightlyDataset(input_dir=train_dir, transform=self.train_classifier_transforms)
+        if self.data_val is None:
             self.dataset_valid = LightlyDataset(input_dir=val_dir, transform=self.test_transforms)
+        if self.data_test is None:
             self.dataset_test = LightlyDataset(input_dir=test_dir, transform=self.test_transforms)
 
     def train_dataloader(self) -> DataLoader[Any]:
@@ -153,7 +157,7 @@ class ClassifierDataModule(LightningDataModule):
             pin_memory=self.pin_memory,
             drop_last=True,
             shuffle=True,
-            persistent_workers=True,
+            persistent_workers=self.persistent_workers,
         )
 
     def val_dataloader(self) -> DataLoader[Any]:
@@ -168,7 +172,7 @@ class ClassifierDataModule(LightningDataModule):
             pin_memory=self.pin_memory,
             drop_last=False,
             shuffle=False,
-            persistent_workers=True,
+            persistent_workers=self.persistent_workers,
         )
 
     def test_dataloader(self) -> DataLoader[Any]:
@@ -183,7 +187,7 @@ class ClassifierDataModule(LightningDataModule):
             pin_memory=self.pin_memory,
             drop_last=False,
             shuffle=False,
-            persistent_workers=True,
+            persistent_workers=self.persistent_workers,
         )
 
     def teardown(self, stage: Optional[str] = None) -> None:

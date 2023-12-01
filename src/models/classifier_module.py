@@ -20,7 +20,7 @@ class ClassifierModule(LightningModule):
         https://lightning.ai/docs/pytorch/latest/common/lightning_module.html
     """
     def __init__(
-        self, 
+        self,
         backbone_ckpt_path: str,
         num_classes : int = 525,
         max_epochs: int = 100
@@ -30,8 +30,7 @@ class ClassifierModule(LightningModule):
         self.save_hyperparameters(logger=False)
 
         ckpt_path = backbone_ckpt_path
-        model = VICRegModule()
-        model.load_state_dict(torch.load(ckpt_path, map_location=torch.device('cpu'))['state_dict'])
+        model = VICRegModule.load_from_checkpoint(ckpt_path)
         model.eval()
 
         # use the pretrained ResNet backbone
@@ -45,7 +44,9 @@ class ClassifierModule(LightningModule):
         self.fc = nn.Linear(512, num_classes)
 
         self.criterion = nn.CrossEntropyLoss()
+        self.accuracy = Accuracy(task='multiclass', num_classes=num_classes)
         self.validation_step_outputs = []
+        self.test_step_outputs = []
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Perform a forward pass through.
@@ -66,11 +67,12 @@ class ClassifierModule(LightningModule):
         :return: A tensor of losses between model predictions and targets.
         """
         x, y, _ = batch
-        y_hat = self.forward(x)
+        # x is list[torch.Tensor]
+        y_hat = self.forward(x[0])
         loss = self.criterion(y_hat, y)
         self.log("classifier_loss", loss)
         return loss
-            
+
     def validation_step(self, batch: Tuple[torch.Tensor, torch.Tensor], batch_idx: int) -> None:
         """Perform a single validation step on a batch of data from the validation set.
 
@@ -101,6 +103,31 @@ class ClassifierModule(LightningModule):
             acc = total_correct / total_num
             self.log("val_acc", acc, on_epoch=True, prog_bar=True)
             self.validation_step_outputs.clear()
+
+    def test_step(self, batch: Tuple[torch.Tensor, torch.Tensor], batch_idx: int) -> None:
+        """Perform a single test step on a batch of data from the test set.
+
+        :param batch: A batch of data (a tuple) containing the input tensor of images and target
+            labels.
+        :param batch_idx: The index of the current batch.
+        """
+        x, y, _ = batch
+        y_hat = self(x)
+
+        loss = self.criterion(y_hat, y)
+        accuracy = self.accuracy(y_hat, y)
+
+        self.log("test_loss", loss)
+        self.log("test_acc", accuracy)
+        return accuracy
+
+    def on_test_epoch_end(self) -> None:
+        """Lightning hook that is called when a test epoch ends."""
+        # calculate and log top1 accuracy
+        if self.test_step_outputs:
+            acc = self.test_step_outputs.sum() / len(self.test_step_outputs)
+            self.log("test_acc", acc, on_epoch=True, prog_bar=True)
+            self.test_step_outputs.clear()
 
     def configure_optimizers(self):
         optim = torch.optim.SGD(self.fc.parameters(), lr=30.0)

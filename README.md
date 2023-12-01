@@ -72,12 +72,21 @@ The project contains a `Dockerfile` you can run to train and evaluate models. Yo
 
 ### Docker
 
+When running with docker, don't forget to
+
+- lower `num_workers` in `data/` configs to `0`.
+- set `persistent_workers` in `data/` configs to `False`.
+
+This way, DataLoader won't try to use shared memory and won't crash due to safety restrictions applied by docker.
+
+You can also use `--ipc=host` flag when running docker to allow the container to use the host's shared memory. When using this flag, you don't need to modify `data/` configs.
+
 ```bash
 # build docker image
 docker build -t ssl-in-the-wild .
 
 # run docker image (trains and evaluates models)
-docker run ssl-in-the-wild
+docker run ssl-in-the-wild --ipc=host
 ```
 
 ### Pip
@@ -117,17 +126,14 @@ conda activate myenv
 Train model with default configuration
 
 ```bash
-# train on CPU
-python src/train.py trainer=cpu
+# train VICREG
+python src/train.py
 
-# train on GPU
-python src/train.py trainer=gpu
-```
+# train Classifier with VICREG backbone
+python src/train.py model=classifier callbacks=classifier_train_callback
 
-Train model with chosen experiment configuration from [configs/experiment/](configs/experiment/)
-
-```bash
-python src/train.py experiment=experiment_name.yaml
+# evaluate model on test dataset
+python src/eval.py model=classifier callbacks=classifier_eval_callback
 ```
 
 You can override any parameter from command line like this

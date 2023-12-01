@@ -16,7 +16,7 @@ from pathlib import Path
 
 """ Created classlist by a csv file.
 :param class_csv: The class list file path.
-"""   
+"""
 def find_class_list(class_csv: str):
     # read file
     birds_100_csv = pd.read_csv(class_csv)
@@ -40,6 +40,7 @@ class BirdsDataModule(LightningDataModule):
         data_dir: str = "data/",
         batch_size: int = 64,
         num_workers: int = 0,
+        persistent_workers: bool = True,
         pin_memory: bool = False,
     ) -> None:
         """Initialize a `BirdsDataModule`.
@@ -55,8 +56,9 @@ class BirdsDataModule(LightningDataModule):
         # also ensures init params will be stored in ckpt
         self.save_hyperparameters(logger=False)
         self.num_workers = num_workers
-        if(num_workers > getNum_workers()):
+        if num_workers > getNum_workers():
             self.num_workers = getNum_workers()
+        self.persistent_workers = persistent_workers
         self.pin_memory = pin_memory
 
         # data transformations
@@ -146,7 +148,7 @@ class BirdsDataModule(LightningDataModule):
             pin_memory=self.pin_memory,
             drop_last=True,
             shuffle=True,
-            persistent_workers=True,
+            persistent_workers=self.persistent_workers,
         )
 
     def teardown(self, stage: Optional[str] = None) -> None:

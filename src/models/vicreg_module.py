@@ -65,6 +65,5 @@ class VICRegModule(LightningModule):
         optim = torch.optim.SGD(self.parameters(), lr=0.06)
         return optim
 
-
 if __name__ == "__main__":
     _ = VICRegModule()

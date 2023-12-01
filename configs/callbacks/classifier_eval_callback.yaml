@@ -7,11 +7,11 @@ defaults:
 model_checkpoint:
   _target_: lightning.pytorch.callbacks.ModelCheckpoint
   dirpath: ${paths.checkpoint_dir} # directory to save the model file
-  filename: 'best_model_vicreg' # checkpoint filename
-  monitor: 'vicreg_loss' # name of the logged metric which determines when model is improving
-  mode: "min"
+  filename: 'best_model_with_classifier' # checkpoint filename
+  monitor: 'val_acc' # name of the logged metric which determines when model is improving
+  mode: "max"
 
 early_stopping:
-  monitor: "vicreg_loss"
+  monitor: "val_acc"
   patience: 100
-  mode: "min"
+  mode: "max"
