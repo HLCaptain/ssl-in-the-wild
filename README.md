@@ -47,11 +47,11 @@ You should be running the repository locally to properly run the pipeline. Use `
 
 #### Data download and preparation
 
-Run all cells in the `notebooks/Milestone1.ipynb` file to download and prepare the data into the `data` folder in the root.
+Run all cells in the `notebooks/Data_preparation.ipynb` file to download and prepare the data into the `data` folder in the root.
 
 ### Train and test the models
 
-Run the `notebooks/Milestone2_training_testing.ipynb` file to train and test the models on the downloaded dataset. You can also load in a checkpoint from a commented out cell.
+Run the `notebooks/Training_and_testing.ipynb` file to train and test the models on the downloaded dataset. You can also load in a checkpoint from a commented out cell.
 
 ## Installation
 
@@ -62,7 +62,7 @@ Install required dependencies from `requirements.txt` file:
 pip install -r requirements.txt
 ```
 
-The model training is limited to Jupiter Notebooks only, so container cannot be used. The files submitted for the Milestone 1 task are the `kaggle.json` and `notebooks/Milestone1.ipynb` files located in the root folder. Open the `Milestone1.ipynb` file and run the code. This should download the dataset to `data` folder, which the `notebooks/Milestone2_training_testing.ipynb` Notebook can use to train and test the models with.
+The model training is limited to Jupiter Notebooks only, so container cannot be used. The files submitted for the Milestone 1 task are the `kaggle.json` and `notebooks/Data_preparation.ipynb` files located in the root folder. Open the `Data_preparation.ipynb` file and run the code. This should download the dataset to `data` folder, which the `notebooks/Training_and_testing.ipynb` Notebook can use to train and test the models with.
 
 ### Preparation
 
