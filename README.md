@@ -129,11 +129,23 @@ Train model with default configuration
 # train VICREG
 python src/train.py
 
-# train Classifier with VICREG backbone
-python src/train.py model=classifier callbacks=classifier_train_callback
+# train Classifier with VICREG backbone and frozen weights
+python src/train.py data=classifier model=classifier_ssl_frozen callbacks=classifier_ssl_frozen_train_callback
 
-# evaluate model on test dataset
-python src/eval.py model=classifier callbacks=classifier_eval_callback
+# train Classifier with VICREG backbone and NOT frozen weights
+# python src/train.py data=classifier model=classifier_ssl_not_frozen callbacks=classifier_ssl_not_frozen_train_callback
+
+# train Classifier without SSL, but pretrained backbone and frozen weights
+# python src/train.py data=classifier model=classifier_pretrained_frozen callbacks=classifier_pretrained_frozen_train_callback
+
+# train Classifier without SSL, but pretrained backbone and NOT frozen weights
+# python src/train.py data=classifier model=classifier_pretrained_not_frozen callbacks=classifier_pretrained_not_frozen_train_callback
+
+# train Classifier with untrained backbone
+# python src/train.py data=classifier model=classifier_untrained callbacks=classifier_untrained_train_callback
+
+# evaluate model with VICREG backbone and frozen weights on test dataset
+python src/eval.py callbacks=classifier_ssl_frozen_eval_callback
 ```
 
 You can override any parameter from command line like this
