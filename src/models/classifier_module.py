@@ -78,7 +78,8 @@ class ClassifierModule(LightningModule):
         """
         x, y, _ = batch
         # x is list[torch.Tensor]
-        y_hat = self.forward(x[0])
+        #y_hat = self.forward(x[0])
+        y_hat = self.forward(x)
         loss = self.criterion(y_hat, y)
         self.log("classifier_loss", loss)
         return loss
