@@ -22,6 +22,9 @@ class ClassifierModule(LightningModule):
     def __init__(
         self,
         backbone_ckpt_path: str,
+        ssl_backbone: bool = True,
+        backbone_pretrained: bool = True,
+        freeze: bool = True,
         num_classes : int = 525,
         max_epochs: int = 100
     ) -> None:
@@ -29,16 +32,23 @@ class ClassifierModule(LightningModule):
         # this line allows to access init params with 'self.hparams' attribute
         self.save_hyperparameters(logger=False)
 
-        ckpt_path = backbone_ckpt_path
-        model = VICRegModule.load_from_checkpoint(ckpt_path)
-        model.eval()
-
-        # use the pretrained ResNet backbone
-        self.backbone = model.backbone
+        if(ssl_backbone):
+            # use the pretrained VICReg backbone
+            ckpt_path = backbone_ckpt_path
+            model = VICRegModule.load_from_checkpoint(ckpt_path)
+            model.eval()
+            self.backbone = model.backbone
+        else:
+            # without SSL pretraining
+            resnet = torchvision.models.resnet18(pretrained=backbone_pretrained)
+            backbone = nn.Sequential(*list(resnet.children())[:-1])
+            self.backbone = backbone
+        
         self.max_epochs = max_epochs
 
-        # freeze the backbone
-        deactivate_requires_grad(self.backbone)
+        if(freeze):
+            # freeze the backbone
+            deactivate_requires_grad(self.backbone)
 
         # create a linear layer for our downstream classification model
         self.fc = nn.Linear(512, num_classes)
@@ -68,7 +78,8 @@ class ClassifierModule(LightningModule):
         """
         x, y, _ = batch
         # x is list[torch.Tensor]
-        y_hat = self.forward(x[0])
+        #y_hat = self.forward(x[0])
+        y_hat = self.forward(x)
         loss = self.criterion(y_hat, y)
         self.log("classifier_loss", loss)
         return loss

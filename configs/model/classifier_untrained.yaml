@@ -1,7 +1,7 @@
 _target_: src.models.classifier_module.ClassifierModule
 backbone_ckpt_path: "${paths.checkpoint_dir}best_model_vicreg.ckpt"
-ssl_backbone: True
-backbone_pretrained: True
-freeze: True
+ssl_backbone: False
+backbone_pretrained: False
+freeze: False
 num_classes: 525
 max_epochs: 100
