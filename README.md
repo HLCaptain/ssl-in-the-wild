@@ -145,7 +145,7 @@ python src/train.py data=classifier model=classifier_ssl_frozen callbacks=classi
 # python src/train.py data=classifier model=classifier_untrained callbacks=classifier_untrained_train_callback
 
 # evaluate model with VICREG backbone and frozen weights on test dataset
-python src/eval.py callbacks=classifier_ssl_frozen_eval_callback
+python src/eval.py +callbacks=classifier_ssl_frozen_eval_callback
 ```
 
 You can override any parameter from command line like this
