@@ -146,6 +146,12 @@ python src/train.py data=classifier model=classifier_ssl_frozen callbacks=classi
 
 # evaluate model with VICREG backbone and frozen weights on test dataset
 python src/eval.py +callbacks=classifier_ssl_frozen_eval_callback
+# evaluate other models
+
+# python src/eval.py model=classifier_ssl_not_frozen +callbacks=classifier_ssl_not_frozen_eval_callback ckpt_path=models/best_model_with_ssl_not_frozen.ckpt
+# python src/eval.py model=classifier_pretrained_frozen +callbacks=classifier_pretrained_frozen_eval_callback ckpt_path=models/best_model_with_pretrained_frozen.ckpt
+# python src/eval.py model=classifier_pretrained_not_frozen +callbacks=classifier_pretrained_not_frozen_eval_callback ckpt_path=models/best_model_with_pretrained_not_frozen.ckpt
+# python src/eval.py model=classifier_untrained +callbacks=classifier_untrained_eval_callback ckpt_path=models/best_model_with_untrained.ckpt
 ```
 
 You can override any parameter from command line like this
