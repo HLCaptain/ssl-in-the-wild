@@ -69,7 +69,7 @@ class ClassifierModule(LightningModule):
         :param x: A tensor of images.
         :return: A tensor of logits.
         """
-        y_hat = self.backbone(x)
+        y_hat = self.backbone(x).flatten(start_dim=1)
         y_hat = self.net(y_hat)
         return y_hat
 
@@ -95,7 +95,7 @@ class ClassifierModule(LightningModule):
         :param batch_idx: The index of the current batch.
         """
         x, y, _ = batch
-        y_hat = self.forward(x[0])
+        y_hat = self.forward(x)
         y_hat = torch.nn.functional.softmax(y_hat, dim=1)
 
         # calculate number of correct predictions

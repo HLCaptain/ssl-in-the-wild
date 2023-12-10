@@ -130,7 +130,7 @@ Train model with default configuration
 python src/train.py
 
 # train Classifier with VICREG backbone and Optuna Hyperparameter Optimzation
-python src/train.py model=classifier callbacks=classifier_train_callback hparams_search=classifier_optuna
+python src/train.py data=classifier model=classifier callbacks=classifier_train_callback hparams_search=classifier_optuna
 
 # train Classifier with VICREG backbone and frozen weights
 python src/train.py data=classifier model=classifier_ssl_frozen callbacks=classifier_ssl_frozen_train_callback
