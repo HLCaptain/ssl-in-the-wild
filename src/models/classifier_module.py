@@ -21,6 +21,9 @@ class ClassifierModule(LightningModule):
     """
     def __init__(
         self,
+        net: torch.nn.Module,
+        optimizer: torch.optim.Optimizer,
+        scheduler: torch.optim.lr_scheduler,
         backbone_ckpt_path: str,
         ssl_backbone: bool = True,
         backbone_pretrained: bool = True,
@@ -51,7 +54,9 @@ class ClassifierModule(LightningModule):
             deactivate_requires_grad(self.backbone)
 
         # create a linear layer for our downstream classification model
-        self.fc = nn.Linear(512, num_classes)
+        self.net = net
+        # self.optimizer = optimizer
+        # self.scheduler = scheduler
 
         self.criterion = nn.CrossEntropyLoss()
         self.accuracy = Accuracy(task='multiclass', num_classes=num_classes)
@@ -64,8 +69,8 @@ class ClassifierModule(LightningModule):
         :param x: A tensor of images.
         :return: A tensor of logits.
         """
-        y_hat = self.backbone(x).flatten(start_dim=1)
-        y_hat = self.fc(y_hat)
+        y_hat = self.backbone(x)
+        y_hat = self.net(y_hat)
         return y_hat
 
     def training_step(self, batch: Tuple[torch.Tensor, torch.Tensor], batch_idx: int)-> torch.Tensor:
@@ -90,7 +95,7 @@ class ClassifierModule(LightningModule):
         :param batch_idx: The index of the current batch.
         """
         x, y, _ = batch
-        y_hat = self.forward(x)
+        y_hat = self.forward(x[0])
         y_hat = torch.nn.functional.softmax(y_hat, dim=1)
 
         # calculate number of correct predictions
@@ -139,9 +144,22 @@ class ClassifierModule(LightningModule):
             self.test_step_outputs.clear()
 
     def configure_optimizers(self):
-        optim = torch.optim.SGD(self.fc.parameters(), lr=30.0)
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optim, self.max_epochs)
-        return [optim], [scheduler]
+        # optim = torch.optim.SGD(self.net.parameters(), lr=30.0)
+        # scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optim, self.max_epochs)
+        # return [self.optimizer], [self.scheduler]
+        optimizer = self.hparams.optimizer(params=self.parameters())
+        if self.hparams.scheduler is not None:
+            scheduler = self.hparams.scheduler(optimizer=optimizer)
+            return {
+                "optimizer": optimizer,
+                "lr_scheduler": {
+                    "scheduler": scheduler,
+                    "monitor": "classifier_loss",
+                    "interval": "epoch",
+                    "frequency": 1,
+                },
+            }
+        return {"optimizer": optimizer}
 
 
 if __name__ == "__main__":

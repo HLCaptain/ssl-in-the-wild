@@ -4,7 +4,7 @@ defaults:
   - _self_
   - data: classifier # choose datamodule with `test_dataloader()` for evaluation
   - model: classifier_ssl_frozen
-  - logger: null
+  - logger: wandb
   - trainer: default
   - paths: default
   - extras: default
