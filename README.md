@@ -39,7 +39,7 @@ Related materials:
 
 Difficulty: hard
 
-## Milestone 2
+## Milestone 3
 
 ### How to run the pipeline
 
