@@ -1,0 +1,17 @@
+defaults:
+  - default
+  - _self_
+
+
+# https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.callbacks.ModelCheckpoint.html
+model_checkpoint:
+  _target_: lightning.pytorch.callbacks.ModelCheckpoint
+  dirpath: ${paths.checkpoint_dir} # directory to save the model file
+  filename: 'best_model_with_pretrained_not_frozen' # checkpoint filename
+  monitor: 'classifier_loss' # name of the logged metric which determines when model is improving
+  mode: "min"
+
+early_stopping:
+  monitor: "classifier_loss"
+  patience: 100
+  mode: "min"

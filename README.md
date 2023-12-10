@@ -47,11 +47,11 @@ You should be running the repository locally to properly run the pipeline. Use `
 
 #### Data download and preparation
 
-Run all cells in the `notebooks/Milestone1.ipynb` file to download and prepare the data into the `data` folder in the root.
+Run all cells in the `notebooks/Data_preparation.ipynb` file to download and prepare the data into the `data` folder in the root.
 
 ### Train and test the models
 
-Run the `notebooks/Milestone2_training_testing.ipynb` file to train and test the models on the downloaded dataset. You can also load in a checkpoint from a commented out cell.
+Run the `notebooks/Training_and_testing.ipynb` file to train and test the models on the downloaded dataset. You can also load in a checkpoint from a commented out cell.
 
 ## Installation
 
@@ -62,7 +62,7 @@ Install required dependencies from `requirements.txt` file:
 pip install -r requirements.txt
 ```
 
-The model training is limited to Jupiter Notebooks only, so container cannot be used. The files submitted for the Milestone 1 task are the `kaggle.json` and `notebooks/Milestone1.ipynb` files located in the root folder. Open the `Milestone1.ipynb` file and run the code. This should download the dataset to `data` folder, which the `notebooks/Milestone2_training_testing.ipynb` Notebook can use to train and test the models with.
+The model training is limited to Jupiter Notebooks only, so container cannot be used. The files submitted for the Milestone 1 task are the `kaggle.json` and `notebooks/Data_preparation.ipynb` files located in the root folder. Open the `Data_preparation.ipynb` file and run the code. This should download the dataset to `data` folder, which the `notebooks/Training_and_testing.ipynb` Notebook can use to train and test the models with.
 
 ### Preparation
 
@@ -129,11 +129,29 @@ Train model with default configuration
 # train VICREG
 python src/train.py
 
-# train Classifier with VICREG backbone
-python src/train.py model=classifier callbacks=classifier_train_callback hparams_search=classifier_optuna
+# train Classifier with VICREG backbone and frozen weights
+python src/train.py data=classifier model=classifier_ssl_frozen callbacks=classifier_ssl_frozen_train_callback
 
-# evaluate model on test dataset
-python src/eval.py model=classifier callbacks=classifier_eval_callback
+# train Classifier with VICREG backbone and NOT frozen weights
+# python src/train.py data=classifier model=classifier_ssl_not_frozen callbacks=classifier_ssl_not_frozen_train_callback
+
+# train Classifier without SSL, but pretrained backbone and frozen weights
+# python src/train.py data=classifier model=classifier_pretrained_frozen callbacks=classifier_pretrained_frozen_train_callback
+
+# train Classifier without SSL, but pretrained backbone and NOT frozen weights
+# python src/train.py data=classifier model=classifier_pretrained_not_frozen callbacks=classifier_pretrained_not_frozen_train_callback
+
+# train Classifier with untrained backbone
+# python src/train.py data=classifier model=classifier_untrained callbacks=classifier_untrained_train_callback
+
+# evaluate model with VICREG backbone and frozen weights on test dataset
+python src/eval.py +callbacks=classifier_ssl_frozen_eval_callback
+# evaluate other models
+
+# python src/eval.py model=classifier_ssl_not_frozen +callbacks=classifier_ssl_not_frozen_eval_callback ckpt_path=models/best_model_with_ssl_not_frozen.ckpt
+# python src/eval.py model=classifier_pretrained_frozen +callbacks=classifier_pretrained_frozen_eval_callback ckpt_path=models/best_model_with_pretrained_frozen.ckpt
+# python src/eval.py model=classifier_pretrained_not_frozen +callbacks=classifier_pretrained_not_frozen_eval_callback ckpt_path=models/best_model_with_pretrained_not_frozen.ckpt
+# python src/eval.py model=classifier_untrained +callbacks=classifier_untrained_eval_callback ckpt_path=models/best_model_with_untrained.ckpt
 ```
 
 You can override any parameter from command line like this

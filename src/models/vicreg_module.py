@@ -37,7 +37,7 @@ class VICRegModule(LightningModule):
             input_dim=512,
             hidden_dim=2048,
             output_dim=2048,
-            num_layers=2,
+            num_layers=4,
         )
 
         # loss function
