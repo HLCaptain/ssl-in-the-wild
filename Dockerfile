@@ -11,6 +11,6 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT python3 src/train.py && \
-    python3 src/train.py model=classifier callbacks=classifier_train_callback && \
-    python3 src/eval.py model=classifier callbacks=classifier_eval_callback
+ENTRYPOINT python3 src/train.py data.num_workers=0 data.persistent_workers=False && \
+    python3 src/train.py data=classifier data.num_workers=0 data.persistent_workers=False model=classifier_ssl_frozen callbacks=classifier_ssl_frozen_train_callback && \
+    python3 src/eval.py +callbacks=classifier_ssl_frozen_eval_callback
