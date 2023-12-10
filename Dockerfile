@@ -12,5 +12,5 @@ COPY . .
 RUN pip install -r requirements.txt
 
 ENTRYPOINT python3 src/train.py && \
-    python3 src/train.py model=classifier callbacks=classifier_train_callback && \
-    python3 src/eval.py model=classifier callbacks=classifier_eval_callback
+    python3 src/train.py data=classifier model=classifier callbacks=classifier_train_callback && \
+    python3 src/eval.py model=classifier +callbacks=classifier_eval_callback
