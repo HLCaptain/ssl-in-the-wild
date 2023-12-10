@@ -2,10 +2,10 @@
 
 # SSL in the Wild: comparison of Self-Supervised Learning methods on ImageNet
 
-<a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white"></a>
-<a href="https://pytorchlightning.ai/"><img alt="Lightning" src="https://img.shields.io/badge/-Lightning-792ee5?logo=pytorchlightning&logoColor=white"></a>
-<a href="https://hydra.cc/"><img alt="Config: Hydra" src="https://img.shields.io/badge/Config-Hydra-89b8cd"></a>
-<a href="https://github.com/ashleve/lightning-hydra-template"><img alt="Template" src="https://img.shields.io/badge/-Lightning--Hydra--Template-017F2F?style=flat&logo=github&labelColor=gray"></a>
+`<a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white">``</a>`
+`<a href="https://pytorchlightning.ai/"><img alt="Lightning" src="https://img.shields.io/badge/-Lightning-792ee5?logo=pytorchlightning&logoColor=white">``</a>`
+`<a href="https://hydra.cc/"><img alt="Config: Hydra" src="https://img.shields.io/badge/Config-Hydra-89b8cd">``</a>`
+`<a href="https://github.com/ashleve/lightning-hydra-template"><img alt="Template" src="https://img.shields.io/badge/-Lightning--Hydra--Template-017F2F?style=flat&logo=github&labelColor=gray">``</a>`
 
 [![Paper](http://img.shields.io/badge/paper-arxiv.1001.2234-B31B1B.svg)](https://www.nature.com/articles/nature14539)
 [![Conference](http://img.shields.io/badge/AnyConference-year-4b44ce.svg)](https://papers.nips.cc/paper/2020)
@@ -17,7 +17,7 @@ Homework project for the Deep Learning course at Budapest University of Technolo
 Team:
 
 - Balázs Püspök-Kiss (BL6ADS)
-- Anna Czifrus (H2MJ2U)
+- Hanna Czifrus (H2MJ2U)
 - Réka Farkas (IXAGK7)
 
 ## Project
@@ -242,7 +242,6 @@ The directory structure of new project looks like this:
 - [**Tests**](#tests): generic, easy-to-adapt smoke tests for speeding up the development
 - [**Continuous Integration**](#continuous-integration): automatically test and lint your repo with Github Actions
 - [**Best Practices**](#best-practices): a couple of recommended tools, practices and standards
-
 
 ## ⚡  Your Superpowers
 
@@ -741,7 +740,6 @@ _Say you want to execute many runs to plot how accuracy changes in respect to ba
    ```bash
    python train.py -m logger=csv data.batch_size=16,32,64,128 tags=["batch_size_exp"]
    ```
-
 2. Write a script or notebook that searches over the `logs/` folder and retrieves csv logs from runs containing given tags in config. Plot the results.
 
 ## Logs
@@ -779,7 +777,7 @@ You can change this structure by modifying paths in [hydra configuration](config
 
 ## Experiment Tracking
 
-PyTorch Lightning supports many popular logging frameworks: [Weights&Biases](https://www.wandb.com/), [Neptune](https://neptune.ai/), [Comet](https://www.comet.ml/), [MLFlow](https://mlflow.org), [Tensorboard](https://www.tensorflow.org/tensorboard/).
+PyTorch Lightning supports many popular logging frameworks: [Weights&amp;Biases](https://www.wandb.com/), [Neptune](https://neptune.ai/), [Comet](https://www.comet.ml/), [MLFlow](https://mlflow.org), [Tensorboard](https://www.tensorflow.org/tensorboard/).
 
 These tools help you keep track of hyperparameters and output metrics and allow you to compare and visualize results. To use one of them simply complete its configuration in [configs/logger](configs/logger) and run:
 
@@ -1081,7 +1079,6 @@ The style guide is available [here](https://pytorch-lightning.readthedocs.io/en/
    class LitModel(LightningModule):
        def __init__(self, layer_size: int = 256, lr: float = 0.001):
    ```
-
 2. Preserve the recommended method order.
 
    ```python
