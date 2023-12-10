@@ -54,7 +54,7 @@ class ClassifierModule(LightningModule):
             deactivate_requires_grad(self.backbone)
 
         # create a linear layer for our downstream classification model
-        self.net = net
+        self.fc = net
         # self.optimizer = optimizer
         # self.scheduler = scheduler
 
@@ -70,7 +70,7 @@ class ClassifierModule(LightningModule):
         :return: A tensor of logits.
         """
         y_hat = self.backbone(x).flatten(start_dim=1)
-        y_hat = self.net(y_hat)
+        y_hat = self.fc(y_hat)
         return y_hat
 
     def training_step(self, batch: Tuple[torch.Tensor, torch.Tensor], batch_idx: int)-> torch.Tensor:
@@ -144,7 +144,7 @@ class ClassifierModule(LightningModule):
             self.test_step_outputs.clear()
 
     def configure_optimizers(self):
-        # optim = torch.optim.SGD(self.net.parameters(), lr=30.0)
+        # optim = torch.optim.SGD(self.fc.parameters(), lr=30.0)
         # scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optim, self.max_epochs)
         # return [self.optimizer], [self.scheduler]
         optimizer = self.hparams.optimizer(params=self.parameters())
